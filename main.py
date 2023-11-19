@@ -1,4 +1,4 @@
-import model.muser
+import model.muser 
 import model.msession as newses
 from datetime import datetime
 from fastapi import FastAPI, HTTPException, Depends, status
@@ -35,6 +35,12 @@ async def login(login: str, password: str, db: Session = db_dependency):
     user = authenticate_user(db, login=login, password=password)
     return {"status": "Logged in successfully"}
 
-@app.get("/protected/")
-async def protected_route(db: Session = db_dependency):
-    return {"message": "Access granted to protected route"}
+
+def createUser(db: Session, name: str, lastName: str, email: str, phone: str, login: str, password: str, rol: str):    
+    new_user = model.muser.User(name=name, lastName=lastName, email=email, phone=phone, login=login, password=password, rol=rol)
+    db.add(new_user)
+    db.commit
+    return {"message" : "Se ha creado correctamente", "code" : "201"}
+
+@app.post("/newuser/")
+async def newuser(name: str, lastName: str, email:str )
