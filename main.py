@@ -39,8 +39,10 @@ async def login(login: str, password: str, db: Session = db_dependency):
 def createUser(db: Session, name: str, lastName: str, email: str, phone: str, login: str, password: str, rol: str):    
     new_user = model.muser.User(name=name, lastName=lastName, email=email, phone=phone, login=login, password=password, rol=rol)
     db.add(new_user)
-    db.commit
+    db.commit()
     return {"message" : "Se ha creado correctamente", "code" : "201"}
 
 @app.post("/newuser/")
-async def newuser(name: str, lastName: str, email:str )
+async def newuser(name: str, lastName: str, email: str, phone: str, login: str, password: str, rol: str, db: Session = db_dependency):
+    newuser = createUser(db , name=name, lastName=lastName, email=email, phone=phone, login=login, password=password, rol=rol)
+    return newuser
